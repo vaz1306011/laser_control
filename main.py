@@ -1,6 +1,23 @@
 """
 用顏色和亮度尋找雷射筆
 """
+
+import os
+import pathlib
+
+# PyQt5 在 venv 中可能找不到 platform plugin
+_qt_plugins = (
+    pathlib.Path(__file__).resolve().parent
+    / ".venv"
+    / "lib"
+    / "site-packages"
+    / "PyQt5"
+    / "Qt5"
+    / "plugins"
+)
+if _qt_plugins.exists():
+    os.environ.setdefault("QT_PLUGIN_PATH", str(_qt_plugins))
+
 import json
 import sys
 import time
@@ -18,7 +35,7 @@ from cv2 import Mat
 from PyQt5 import QtCore, QtWidgets
 
 # pyuic5 -x .\buttonUI.ui -o buttonUI.py
-from buttonUI import Ui_Dialog
+from laser_control.buttonUI import Ui_Dialog
 
 BLACK = [0, 0, 0]
 WHITE = [255, 255, 255]
@@ -285,7 +302,8 @@ class Trigger(QtCore.QObject):
             self._timer.start()
 
 
-lazer_color = json.load(open("point_hsv.json", "r"))
+_hsv_path = pathlib.Path(__file__).resolve().parent / "laser_control" / "point_hsv.json"
+lazer_color = json.load(open(_hsv_path, "r"))
 
 
 class LazerController:

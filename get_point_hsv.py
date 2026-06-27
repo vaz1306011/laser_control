@@ -1,7 +1,9 @@
 """
 背景減法器
 """
+
 import json
+import pathlib
 from collections import Counter
 from dataclasses import dataclass
 from typing import List, Tuple
@@ -232,4 +234,5 @@ max_color = [max_h, max_s, max_v]
 print(f"Min: {min_color}")
 print(f"Max: {max_color}")
 val = {"min_color": min_color, "max_color": max_color}
-json.dump(val, open("point_hsv.json", "w"))
+_hsv_path = pathlib.Path(__file__).resolve().parent / "laser_control" / "point_hsv.json"
+json.dump(val, open(_hsv_path, "w"))
